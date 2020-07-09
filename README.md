@@ -3,42 +3,40 @@
 
 
 
-# Implementation :
+# Implementation 1 : Naive DFS (Time Limit Error)
 ```java
-class Solution {
-    public int longestIncreasingPath(int[][] matrix) {
-        if (matrix == null || matrix.length == 0) return 0;
-        int rows = matrix.length, cols = matrix[0].length;
-        int[][] dp = new int[rows][cols];
-        int res = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (dp[i][j] == 0) {
-                    dfs(matrix, i, j, dp, Integer.MIN_VALUE);
-                    res = Math.max(res, dp[i][j]);
-                }
-            }
-        }
+public class Solution {
+	private static final int[][] directions = { { 0, 1 }, { 0, -1 }, { -1, 0 }, { 1, 0 } };
+	
+	public int longestIncreasingPath(int[][] matrix) {
+		if (matrix == null || matrix.length == 0)
+			return 0;
+            
+		int rows = matrix.length, columns = matrix[0].length;
 
-        return res;
-    }
+		int longestPath = 1;
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns; column++) {
+				int length = dfs(matrix, row, column);
+				longestPath = Math.max(longestPath, length);
+			}
+		}
+		return longestPath;
+	}
 
-    private int dfs(int[][] matrix, int row, int col, int[][] dp, int prev) {
-        if (row > matrix.length - 1 || row < 0 ||
-            col > matrix[0].length - 1 || col < 0 ||
-           matrix[row][col] <= prev) return 0;
-        if (dp[row][col] != 0) return dp[row][col];
-
-        int left = dfs(matrix, row, col - 1, dp, matrix[row][col]);
-        int right = dfs(matrix, row, col + 1, dp, matrix[row][col]);
-        int up = dfs(matrix, row - 1, col, dp, matrix[row][col]);
-        int down = dfs(matrix, row + 1, col, dp, matrix[row][col]);
-
-        dp[row][col] = Math.max(left, Math.max(right, Math.max(up, down))) + 1;
-        return dp[row][col];
-    }
+	private int dfs(int[][] matrix, int row, int column) {
+		int pathLength = 0;
+		for (int[] direction : directions) {
+			int x = row + direction[0], y = column + direction[1];
+			if (x >= 0 && x < matrix.length && y >= 0 && y < matrix[0].length && 
+				matrix[x][y] > matrix[row][column]) {
+				int length = dfs(matrix, x, y);
+				pathLength = Math.max(pathLength, length);
+			}
+		}
+		return pathLength + 1;
+	}
 }
-
 ```
 
 # References :
