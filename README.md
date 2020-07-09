@@ -105,5 +105,5 @@ public class Solution {
 
 # References :
 1. https://www.youtube.com/watch?v=ZAmxc4Qrqi8
-2. https://evelynn.gitbooks.io/google-interview/longest_increasing_path_in_a_matrix.html
+2. https://leetcode.com/articles/longest-increasing-path-matrix
 3. https://www.programcreek.com/2014/05/leetcode-longest-increasing-path-in-a-matrix-java
