@@ -103,6 +103,47 @@ public class Solution {
 }
 ```
 
+# Implementation 3 
+```java
+class Solution {
+    public int longestIncreasingPath(int[][] matrix) {
+        if(matrix == null || matrix.length == 0)
+            return 0;
+        int longestPath = 1;
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] cache = new int[rows][cols];
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                int result = dfs(matrix, i, j, matrix[i][j] - 1, cache);
+                longestPath = Math.max(longestPath,  result);
+            }
+        }
+        return longestPath;
+    }
+    
+    private int dfs(int[][]matrix, int row, int col, int prevValue, int[][] cache) {
+        if(row < 0 || row >= matrix.length || col < 0 || col >= matrix[0].length || matrix[row][col] <= prevValue)
+            return 0;
+        if(cache[row][col] != 0)
+            return cache[row][col];
+        int right = dfs(matrix, row, col + 1, matrix[row][col], cache);
+        int left = dfs(matrix, row, col - 1, matrix[row][col], cache);
+        int up = dfs(matrix, row - 1, col, matrix[row][col], cache);
+        int down = dfs(matrix, row + 1, col, matrix[row][col], cache);
+        
+        int max = Math.max(right, left);
+        max = Math.max(max, up);
+        max = Math.max(max, down);
+        cache[row][col] = 1 + max;
+        return cache[row][col];
+    }
+    
+}
+
+```
+
+
 # References :
 1. https://www.youtube.com/watch?v=ZAmxc4Qrqi8
 2. https://leetcode.com/articles/longest-increasing-path-matrix
